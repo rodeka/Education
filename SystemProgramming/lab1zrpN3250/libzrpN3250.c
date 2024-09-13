@@ -28,17 +28,6 @@ static const unsigned char PNG_MAGIC[] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x
 static const unsigned char GIF_MAGIC[] = {0x47, 0x49, 0x46, 0x38};
 static const unsigned char BMP_MAGIC[] = {0x42, 0x4D};
 
-// Функция логирования отладочной информации
-void log_debug(const char *format, ...) {
-    char *debug_env = getenv("LAB1DEBUG");
-    if (debug_env) {
-        va_list args;
-        va_start(args, format);
-        vfprintf(stderr, format, args);
-        va_end(args);
-    }
-}
-
 // Получение информации о плагине
 int plugin_get_info(struct plugin_info* ppi) {
     if (!ppi) {
@@ -109,6 +98,7 @@ int check_file_type(const char *filename, const char *pic_types) {
 
 // Обработка файла плагином
 int plugin_process_file(const char *filename, struct option in_opts[], size_t in_opts_len) {
+    char *DEBUG = getenv("LAB1DEBUG");
     char *pic_types = NULL;
 
     // Получаем значение опции --pic
@@ -120,19 +110,28 @@ int plugin_process_file(const char *filename, struct option in_opts[], size_t in
     }
 
     if (!filename || !pic_types) {
-        log_debug("DEBUG: %s: Invalid file name or pic types not set\n", PLUGIN_NAME);
+        if(DEBUG){
+            printf("DEBUG: %s: Invalid file name or pic types not set\n", PLUGIN_NAME);
+        }
         return -1;
     }
 
-    log_debug("DEBUG: %s: Processing file: %s with pic types: %s\n", PLUGIN_NAME, filename, pic_types);
+    if(DEBUG){
+            printf("DEBUG: %s: Processing file: %s with pic types: %s\n", PLUGIN_NAME, filename, pic_types);
+        }
 
     // Проверяем соответствие файла указанным форматам
     int result = check_file_type(filename, pic_types);
     if (result == 0) {
-        log_debug("DEBUG: %s: File %s is of the desired image type\n", PLUGIN_NAME, filename);
+        if(DEBUG){
+            printf("DEBUG: %s: File %s is of the desired image type\n", PLUGIN_NAME, filename);
+        }
         return 0;
     }
 
-    log_debug("DEBUG: %s: File %s is not of the desired image type\n", PLUGIN_NAME, filename);
+    if(DEBUG){
+        printf("DEBUG: %s: File %s is not of the desired image type\n", PLUGIN_NAME, filename);
+    }
+
     return 1;
 }
