@@ -1,6 +1,7 @@
-*lab??/lab??zrpN3250
-*lab??/lab?zrpN3250
-*lab??/libzrpN3250
-*/*.o
-lab??/test_dir/*
-lab??/valgrind.txt
+lab11zrpN3250/lab11zrpN3250
+lab11zrpN3250/test_dir/*
+lab11zrpN3250/valgrind.txt
+lab1zrpN3250/lab1zrpN3250
+lab1zrpN3250/libzrpN3250.so
+lab1zrpN3250/test_dir/*
+lab1zrpN3250/valgrind.txt
