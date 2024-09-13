@@ -354,7 +354,7 @@ int main(int argc, char *argv[]) {
     }
 
     if (show_version) {
-        printf("Version: 1.0.0\nAuthor: Custom Author\n");
+        printf("Version: 1.0\nAuthor: Zelenskiy Rodion\n");
     }
 
     if (show_help) {
