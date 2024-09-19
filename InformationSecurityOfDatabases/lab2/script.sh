@@ -1,10 +1,10 @@
 sudo -u postgres psql << EOF
-\c n3250_6;
-CREATE SCHEMA n3250_6_schema_lab2;
-SET search_path = n3250_6_schema_lab2;
+\c n3250_367228;
+CREATE SCHEMA n3250_367228_schema_lab2;
+SET search_path = n3250_367228_schema_lab2;
 \echo 1
 SET datestyle = 'DMY';
-CREATE TABLE n3250_6_schema_lab2.users_info
+CREATE TABLE n3250_367228_schema_lab2.users_info
 (id INTEGER PRIMARY KEY, username VARCHAR, date_of_birth DATE, team_id INTEGER, is_leader BOOLEAN);
 INSERT INTO users_info (id, username, date_of_birth, team_id, is_leader) VALUES
 (1, 'keker', '02/01/1999', 1, FALSE),
@@ -21,7 +21,7 @@ INSERT INTO users_info (id, username, date_of_birth, team_id, is_leader) VALUES
 (12, 'hacker228_2', '01/04/2009', 228, FALSE),
 (13, 'neadmin', '01/04/1999', 3, FALSE);
 SELECT * FROM users_info;
-CREATE TABLE n3250_6_schema_lab2.teams_info
+CREATE TABLE n3250_367228_schema_lab2.teams_info
 (id INTEGER PRIMARY KEY, name VARCHAR, leader_id INTEGER);
 INSERT INTO teams_info (id, name, leader_id) VALUES
 (1, 'SomeShiftHappens', 3),
@@ -30,7 +30,7 @@ INSERT INTO teams_info (id, name, leader_id) VALUES
 (4, 'theboys', 7),
 (5, 'losers', 9),
 (228, 'GOD', 11);
-SELECT * FROM n3250_6_schema_lab2.teams_info;
+SELECT * FROM n3250_367228_schema_lab2.teams_info;
 \echo 2
 UPDATE teams_info SET leader_id = 1 WHERE teams_info.id = 1;
 UPDATE users_info SET is_leader = CASE WHEN id IN (SELECT leader_id FROM teams_info) THEN TRUE ELSE FALSE END;

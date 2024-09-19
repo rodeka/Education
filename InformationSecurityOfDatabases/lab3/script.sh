@@ -1,8 +1,8 @@
 sudo -u postgres psql << EOF
-\c n3250_6;
-CREATE SCHEMA n3250_6_schema_lab3;
-SET search_path = n3250_6_schema_lab3;
-CREATE TABLE n3250_6_schema_lab3.boosters_info (id INTEGER PRIMARY KEY, name VARCHAR, count_of_orders INTEGER, rating REAL, balance INTEGER);
+\c n3250_367228;
+CREATE SCHEMA n3250_367228_schema_lab3;
+SET search_path = n3250_367228_schema_lab3;
+CREATE TABLE n3250_367228_schema_lab3.boosters_info (id INTEGER PRIMARY KEY, name VARCHAR, count_of_orders INTEGER, rating REAL, balance INTEGER);
 INSERT INTO boosters_info (id, name, count_of_orders, rating, balance) VALUES
 (1, 'alice_smith', 12, 4.7, 0),
 (2, 'bob_johnson', 25, 3.9, 30),
@@ -10,7 +10,7 @@ INSERT INTO boosters_info (id, name, count_of_orders, rating, balance) VALUES
 (4, 'dave_wilson', 30, 4.2, 3),
 (5, 'eve_martin', 15, 4.8, 39);
 SELECT * FROM boosters_info;
-CREATE TABLE n3250_6_schema_lab3.service_list (id INTEGER PRIMARY KEY, name VARCHAR, cost INTEGER);
+CREATE TABLE n3250_367228_schema_lab3.service_list (id INTEGER PRIMARY KEY, name VARCHAR, cost INTEGER);
 INSERT INTO service_list (id, name, cost) VALUES
 (1, 'raid', 5),
 (2, 'dungeon', 3),
@@ -18,7 +18,7 @@ INSERT INTO service_list (id, name, cost) VALUES
 (4, 'pvp', 4),
 (5, 'levelup', 30);
 SELECT * FROM service_list;
-CREATE TABLE n3250_6_schema_lab3.orders_info (id INTEGER PRIMARY KEY, service_id INTEGER, booster_id INTEGER, ordered_date DATE, is_done BOOLEAN);
+CREATE TABLE n3250_367228_schema_lab3.orders_info (id INTEGER PRIMARY KEY, service_id INTEGER, booster_id INTEGER, ordered_date DATE, is_done BOOLEAN);
 INSERT INTO orders_info (id, service_id, booster_id, ordered_date, is_done) VALUES
 (1, 2, 2, '01/02/2000', FALSE),
 (2, 1, 1, '02/02/2000', FALSE),
@@ -77,7 +77,7 @@ BEFORE INSERT ON orders_info
 FOR EACH ROW
 EXECUTE FUNCTION trigger_insert_by_date();
 \echo 4
-CREATE TABLE n3250_6_schema_lab3.dictionary (
+CREATE TABLE n3250_367228_schema_lab3.dictionary (
     old_value VARCHAR PRIMARY KEY,
     new_value VARCHAR
 );

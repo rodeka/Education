@@ -1,7 +1,7 @@
 sudo -u postgres psql << EOF
-\c n3250_6;
-CREATE SCHEMA n3250_6_schema_lab5;
-SET search_path = n3250_6_schema_lab5;
+\c n3250_367228;
+CREATE SCHEMA n3250_367228_schema_lab5;
+SET search_path = n3250_367228_schema_lab5;
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 \echo 1
 CREATE TABLE hashes (

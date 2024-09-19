@@ -1,16 +1,16 @@
 sudo -u postgres psql << EOF
-\c n3250_6;
-CREATE SCHEMA n3250_6_schema_lab4;
-SET search_path = n3250_6_schema_lab4;
+\c n3250_367228;
+CREATE SCHEMA n3250_367228_schema_lab4;
+SET search_path = n3250_367228_schema_lab4;
 \echo 1
-CREATE TABLE n3250_6_schema_lab4.employees (
+CREATE TABLE n3250_367228_schema_lab4.employees (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     position VARCHAR(100),
     salary NUMERIC
 );
 
-CREATE TABLE n3250_6_schema_lab4.departments (
+CREATE TABLE n3250_367228_schema_lab4.departments (
     id SERIAL PRIMARY KEY,
     department_name VARCHAR(100) NOT NULL
 );
