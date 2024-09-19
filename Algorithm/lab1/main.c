@@ -8,47 +8,81 @@
 #define LEFT_SIDE -1e9 // Крайняя левая сторона
 #define RIGHT_SIDE 1e9 // Крайняя правая сторона
 
-// куб функция
+// куб. функция
+double f(double x, double a, double b, double c, double d);
+
+// производная куб. функции
+double df(double x, double a, double b, double c);
+
+// вторая производная куб. функции
+double ddf(double x, double a, double b);
+
+// комбинированный метод
+double comb_method(double a, double b, double c, double d, double x0, double x1);
+
+// решение куб. уравнения комбинированным методом
+void solveCubicHybrid(double a, double b, double c, double d);
+
+// решение куб. уравнения методом Кардано
+void solveCubicKardano(double a, double b, double c, double d);
+
+int main() {
+    double a, b, c, d;
+    // Ввод коэффициентов кубического уравнения
+    printf("Введите коэффициенты уравнения ax^3 + bx^2 + cx + d = 0:\na b c d\n");
+    if (scanf("%lf %lf %lf %lf", &a, &b, &c, &d) != 4) {
+        printf("Ошибка ввода. Убедитесь, что вы вводите числа типа double.\n");
+        return 1;
+    }
+    if(a==0){
+        printf("Коэфициент a должен быть не нулевым.\n");
+        return 1;
+    }
+
+    b /= a;
+    c /= a;
+    d /= a;
+    a /= a;
+
+    printf("Комбинированный метод решения:\n");
+    solveCubicHybrid(a, b, c, d);
+    printf("Решение по формуле Кардано:\n");
+    solveCubicKardano(a, b, c, d);
+    return 0;
+}
+
 double f(double x, double a, double b, double c, double d) {
     return a * x * x * x + b * x * x + c * x + d;
 }
 
-// производная куб функции
+// производная куб. функции
 double df(double x, double a, double b, double c) {
     return 3 * a * x * x + 2 * b * x + c;
 }
 
-// вторая производная куб функции
+// вторая производная куб. функции
 double ddf(double x, double a, double b) {
     return 6 * a * x + 2 * b;
-}
-
-void swap_double(double *a, double *b) {
-    double tmp = *a;
-    *a = *b;
-    *b = tmp;
-    return;
 }
 
 // комбинированный метод
 double comb_method(double a, double b, double c, double d, double x0, double x1) {
     int iter = 0;
     while (fabs(x0 - x1) > 2 * EPSILON && iter < MAX_ITER) {
-        // метод хорд
         if (f(x0, a, b, c, d) * ddf(x0, a, b) < 0) {
             x0 = x0 - f(x0, a, b, c, d) * (x0 - x1) / (f(x0, a, b, c, d) - f(x1, a, b, c, d));
         } else if (f(x0, a, b, c, d) * ddf(x0, a, b) > 0) {
             x0 = x0 - f(x0, a, b, c, d) / df(x0, a, b, c);
         }
 
-        // метод касательных
         if (f(x1, a, b, c, d) * ddf(x1, a, b) < 0) {
             x1 = x1 - f(x1, a, b, c, d) * (x1 - x0) / (f(x1, a, b, c, d) - f(x0, a, b, c, d));
         } else if (f(x1, a, b, c, d) * ddf(x1, a, b) > 0) {
             x1 = x1 - f(x1, a, b, c, d) / df(x1, a, b, c);
         }
+        iter++;
     }
-    printf("x: %lf\n", x1);
+    printf("x: %lf\n", (x0 + x1) / 2);
     return (x0 + x1) / 2;
 }
 
@@ -99,28 +133,4 @@ void solveCubicKardano(double a, double b, double c, double d) {
         double x3 = 2 * cbrt(r) * cos((phi + 4 * M_PI) / 3) - b / (3 * a);
         printf("x: %lf\nx: %lf\nx: %lf\n", x1, x2, x3);
     }
-}
-
-int main() {
-    double a, b, c, d;
-    // Ввод коэффициентов кубического уравнения
-    printf("Введите коэффициенты уравнения ax^3 + bx^2 + cx + d = 0:\na b c d\n");
-    if (scanf("%lf", &a) != 1 || a == 0) {
-        printf("коэффициент a должен быть ненулевым числом.\n");
-        return 1;
-    }
-    scanf("%lf", &b);
-    scanf("%lf", &c);
-    scanf("%lf", &d);
-    b /= a;
-    c /= a;
-    d /= a;
-    a /= a;
-
-    // поиск корней уравнения комбинированным методом (хорд, касательных)
-    printf("Комбинированный метод решения:\n");
-    solveCubicHybrid(a, b, c, d);
-    printf("Решение по формуле Кардано:\n");
-    solveCubicKardano(a, b, c, d);
-    return 0;
 }
