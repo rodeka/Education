@@ -1,4 +1,4 @@
-sudo -u postgres psql << EOF
+sudo -u postgres psql -e << EOF
 \c n3250_367228;
 CREATE SCHEMA n3250_367228_schema_lab3;
 SET search_path = n3250_367228_schema_lab3;

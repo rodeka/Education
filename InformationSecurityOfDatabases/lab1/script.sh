@@ -1,4 +1,4 @@
-sudo -u postgres psql << EOF
+sudo -u postgres psql -e << EOF
 DROP DATABASE n3250_367228;
 \echo 2
 CREATE DATABASE n3250_367228; 
@@ -17,7 +17,7 @@ CREATE TABLE n3250_367228_schema_lab1.n3250_367228_table_i5
 (a INTEGER, b VARCHAR, c CHAR, d TIMESTAMP, e DATE, f BYTEA);
 \dt
 \echo 7
-CREATE TALBE n3250_367228_schema_lab1.n3250_367228_table_i6(year INTEGER DEFAULT 2024, time_interval INTERVAL);
+CREATE TABLE n3250_367228_schema_lab1.n3250_367228_table_i6(year INTEGER DEFAULT 2024, time_interval INTERVAL);
 \dt
 \echo 8
 CREATE TYPE n3250_367228_schema_lab1.n3250_367228_type AS
@@ -61,7 +61,7 @@ CREATE TABLE n3250_367228_schema_lab1.n3250_367228_pk
 \dt
 \echo 19
 CREATE TABLE n3250_367228_schema_lab1.n3250_367228_check
-(a INTEGER, b VARCHAR, c CHAR, d TIMESTAMP, e DATE, f BYTEA, CONSTRAINT cehck_containts_a CHECK(b LIKE 'a'));
+(a INTEGER, b VARCHAR, c CHAR, d TIMESTAMP, e DATE, f BYTEA, CONSTRAINT check_containts_a CHECK(b LIKE 'a'));
 \dt
 \echo 20
 CREATE VIEW n3250_367228_schema_lab1.n3250_367228_view AS SELECT b, e FROM n3250_367228_table_i5;
