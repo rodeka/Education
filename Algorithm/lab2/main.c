@@ -20,7 +20,7 @@ int main(){
         return 1;
     }
 
-    char filename[100];
+    char filename[255];
     printf("Введите имя файла: ");
     scanf("%s", filename);
 
@@ -123,6 +123,7 @@ int read_numbers_from_file(const char *filename, int **arr, int *size, int use_d
         // Проверяем, удалось ли считать число
         if (fscanf(file, "%d", &temp) != 1){
             printf("Ошибка: обнаружены некорректные данные в файле\n");
+            fclose(file);
             return -1;
         }
 
