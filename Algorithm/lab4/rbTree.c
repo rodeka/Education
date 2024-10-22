@@ -96,8 +96,12 @@ void insertRBTree(RBNode** root, int data) {
         y = x;
         if (z->data < x->data) {
             x = x->left;
-        } else {
+        } else if (z->data > x->data) {
             x = x->right;
+        } else {
+            printf("Warning: добавление повторяющегося элемента %d пропущено\n", z->data);
+            freeRBTree(z);
+            return;
         }
     }
 

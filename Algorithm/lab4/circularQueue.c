@@ -4,7 +4,7 @@
 
 // Функции для работы с кольцевой очередью
 void initQueue(CircularQueue* q, int initialCapacity) {
-    q->data = (int *)malloc(initialCapacity * sizeof(int));
+    q->data = (int*)malloc(initialCapacity * sizeof(int));
     q->head = 0;
     q->tail = 0;
     q->size = 0;
@@ -54,15 +54,14 @@ void enqueue(CircularQueue* q, int value) {
 }
 
 int dequeue(CircularQueue* q) {
-    if (!isEmpty(q)) {
-        int value = q->data[q->head];
-        q->head = (q->head + 1) % q->capacity;
-        q->size--;
-        return value;
-    } else {
+    if (isEmpty(q)) {
         printf("Ошибка: очередь пуста\n");
         exit(1);
     }
+    int value = q->data[q->head];
+    q->head = (q->head + 1) % q->capacity;
+    q->size--;
+    return value;
 }
 
 int get(CircularQueue* q, int index) {

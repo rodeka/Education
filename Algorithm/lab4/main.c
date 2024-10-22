@@ -55,7 +55,6 @@ int main() {
     int* unsorted_data = (int*)malloc(size * sizeof(int));
     discharge(queue, unsorted_data, size);
     cocktail_sort(unsorted_data, size);
-
     assign(queue, unsorted_data, size);
     
     printf("Числа в очереди после сортировки\n");

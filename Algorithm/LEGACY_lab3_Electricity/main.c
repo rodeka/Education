@@ -1,41 +1,55 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "matrix.h"
+#include "circuit.h"
 
-typedef struct {
-    char type;
-    int high;
-    int low;
-    double value;
-} Component; 
+void initCircuit(Circuit* circuit) {
+    circuit->components = NULL;
+    circuit->countIntensitas = 0;
+    circuit->countVoltage = 0;
+    circuit->countResistor = 0;
+    circuit->countCapacity = 0;
+    circuit->countInductor = 0;
+    circuit->answer = malloc(2 * sizeof(Matrix*));
+}
 
-Component** parseFile(char* fileName, int* countNodes, int* countEdges, int* countVoltage){
+void parseFile(Circuit* circuit, char* fileName){
     FILE* file;
     file = fopen(fileName, "r");
-    fscanf(file, "%d %d\n", countNodes, countEdges);
-    Component** components = malloc((*countEdges) * sizeof(Component*));
+    fscanf(file, "%d %d\n", &circuit->countNodes, &circuit->countEdges);
+    circuit->components = malloc(circuit->countEdges * sizeof(Component*));
 
     char type;
     int high, low;
     double value;
-    for (int i = 0; i < *countEdges; ++i) {
-        components[i] = malloc(sizeof(Component*));
+    for (int i = 0; i < circuit->countEdges; ++i) {
+        circuit->components[i] = malloc(sizeof(Component*));
         fscanf(file, "%c %d %d %lf\n", &type, &high, &low, &value);
-        components[i]->type = type;
-        components[i]->high = high;
-        components[i]->low = low;
-        components[i]->value = value;
-        if(type=='V')
-            (*countVoltage)+=1;
+        circuit->components[i]->type = type;
+        circuit->components[i]->high = high;
+        circuit->components[i]->low = low;
+        circuit->components[i]->value = value;
+        switch (type)
+        {
+        case 'V':
+            circuit->countVoltage++;
+            break;
+        case 'I':
+            circuit->countIntensitas++;
+            break;
+        case 'R':
+            circuit->countResistor++;
+            break;
+        case 'C':
+            circuit->countCapacity++;
+            break;
+        case 'L':
+            circuit->countInductor++;
+            break;
+        }   
     }
-    return components;
+    return;
 }
-
-typedef struct
-{
-    int i;
-    int j;
-    double** M;
-} Matrix;
 
 Matrix* initMatrix(int size_i, int size_j){
     Matrix* matrix = malloc(sizeof(Matrix));
@@ -51,6 +65,15 @@ Matrix* initMatrix(int size_i, int size_j){
     return matrix;
 }
 
+void freeMatrix(Matrix* matrix) {
+    for(int i=0; i < matrix->i; i++){
+        free(matrix->M[i]);
+    }
+    free(matrix->M);
+    free(matrix);
+    return;
+}
+
 void printMatrix(Matrix* A){
     for (int i=0; i < A->i; ++i){
         for (int j = 0; j < A->j; ++j){
@@ -58,21 +81,22 @@ void printMatrix(Matrix* A){
         }
         printf("\n");
     }
+    printf("\n");
     return;
 }
 
-Matrix** calculateMatrices(Component** components, int countNodes, int countEdges, int countVoltage){
-    Matrix** answer = malloc(2 * sizeof(Matrix*));
-    int matrixSize = countNodes + countVoltage - 1;
-    printf("g2:%d\nmatrix:%d\n", countVoltage, matrixSize);
+void calculateMatrixs(Circuit* circuit){
+    int matrixSize = circuit->countNodes + circuit->countVoltage - 1;
+    int g2Count = circuit->countVoltage + circuit-> countInductor;
+    printf("matrix:%d\ng2:%d\n", matrixSize, g2Count);
     Matrix* A = initMatrix(matrixSize, matrixSize);
     Matrix* b = initMatrix(matrixSize, 1);
-    int g2Index = countNodes - 1;
-    for(int i = 0; i < countEdges; ++i){
-        int high = components[i]->high;
-        int low = components[i]->low;
-        double value = components[i]->value;
-        if(components[i]->type == 'R'){
+    int g2Index = matrixSize - g2Count;
+    for(int i = 0; i < circuit->countEdges; ++i){
+        int high = circuit->components[i]->high;
+        int low = circuit->components[i]->low;
+        double value = circuit->components[i]->value;
+        if(circuit->components[i]->type == 'R'){
             if(high != 0)
                 A->M[high - 1][high - 1] += 1 / value;
             if(low != 0)
@@ -83,7 +107,24 @@ Matrix** calculateMatrices(Component** components, int countNodes, int countEdge
                 A->M[low - 1][high - 1] -= 1 / value;
             }
         }
-        if(components[i]->type == 'V'){
+        
+        // Для C не контур
+        // if(circuit->components[i]->type == 'C')
+
+        if(circuit->components[i]->type == 'L'){
+            if(high != 0){
+                A->M[high - 1][g2Index] += 1;
+                A->M[g2Index][high - 1] += 1;
+            }
+            if(low != 0){
+                A->M[low - 1][g2Index] -= 1;
+                A->M[g2Index][low - 1] -= 1;
+            }
+            b->M[g2Index][0] = 0;
+            g2Index += 1;
+        }
+
+        if(circuit->components[i]->type == 'V'){
             if(high != 0){
                 A->M[high - 1][g2Index] += 1;
                 A->M[g2Index][high - 1] += 1;
@@ -95,33 +136,35 @@ Matrix** calculateMatrices(Component** components, int countNodes, int countEdge
             b->M[g2Index][0] = value;
             g2Index += 1;
         }
+
+        if(circuit->components[i]->type == 'I'){
+            if(high != 0){
+                b->M[high - 1][0] -= value;
+            }
+            if(low != 0){
+                b->M[low - 1][0] += value;
+            }
+        }
     }
-    answer[0] = A;
-    answer[1] = b;
-    return answer;
+    circuit->answer[0] = A;
+    circuit->answer[1] = b;
+    return;
 }
 
-void freeAll(Component** components, int count, Matrix** answer){
-    for(int i = 0; i < count; ++i){
-        free(components[i]);
+void freeAll(Circuit* circuit){
+    for(int i = 0; i < circuit->countEdges; i++){
+        free(circuit->components[i]);
     }
-    free(components);
-    Matrix* A = answer[0];
-    Matrix* b = answer[1];
-    for (int i = 0; i < A->i; ++i) {
-        free(A->M[i]);
-    }
-    for(int i = 0; i < b->i; ++i){
-        free(b->M[i]);
-    }
-    free(A);
-    free(b);
-    free(answer);
+    free(circuit->components);
+    freeMatrix(circuit->answer[0]);
+    freeMatrix(circuit->answer[1]);
+    free(circuit->answer);
+    free(circuit);
 }
 
-void printSLAU(Matrix** answer){
-    Matrix* A = answer[0];
-    Matrix* b = answer[1];
+void printSLAU(Circuit* circuit){
+    Matrix* A = circuit->answer[0];
+    Matrix* b = circuit->answer[1];
     printMatrix(A);
     printMatrix(b);
     int size = A->i;
@@ -135,12 +178,11 @@ void printSLAU(Matrix** answer){
 }
 
 int main(){
-    int countEdges, countNodes, countVoltage=0;
-    Component** components;
-    components = parseFile("test.txt", &countNodes, &countEdges, &countVoltage);
-    Matrix** answer;
-    answer = calculateMatrices(components, countNodes, countEdges, countVoltage);
-    printSLAU(answer);
-    freeAll(components, countEdges, answer);
+    Circuit* circuit = (Circuit*)malloc(sizeof(Circuit));
+    initCircuit(circuit);
+    parseFile(circuit, "test.txt");
+    calculateMatrixs(circuit);
+    printSLAU(circuit);
+    freeAll(circuit);
     return 0;
 }

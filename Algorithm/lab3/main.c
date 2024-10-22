@@ -32,12 +32,12 @@ int main() {
     int* unsorted_data = (int*)malloc(size * sizeof(int));
     discharge(deque, unsorted_data, size);
     cocktail_sort(unsorted_data, size);
+    assign(deque, unsorted_data, size);
+    free(unsorted_data);
 
     printf("Числа после коктейльной сортировки:\n");
-    assign(deque, unsorted_data, size);
     printDeque(deque);
 
-    free(unsorted_data);
     freeDeque(deque);
     return 0;
 }
