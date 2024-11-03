@@ -1,5 +1,9 @@
 sudo -u postgres psql -e << EOF
 \c n3250_367228;
+DROP USER user1;
+DROP USER user2;
+DROP USER user3;
+DROP USER user4;
 CREATE SCHEMA n3250_367228_schema_lab4;
 SET search_path = n3250_367228_schema_lab4;
 \echo 1

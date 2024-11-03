@@ -15,7 +15,7 @@ all:
 	bash lab3/script.sh
 
 4: 3
-	bash lab1/script.sh
+	bash lab4/script.sh
 
 5: 4
-	bash lab1/script.sh
+	bash lab5/script.sh
