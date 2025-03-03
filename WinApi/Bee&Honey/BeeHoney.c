@@ -3,10 +3,10 @@
 #include <windows.h>
 
 #ifndef BEE_PUT
-#define BEE_PUT(n) printf("\nBEE_PUT %d!", (n))
+#define BEE_PUT(n) printf("\nBEE_PUT %d!", n)
 #endif
 #ifndef BEE_WAKE
-#define BEE_WAKE(n) printf("\nBEE_WAKE %d!", (n))
+#define BEE_WAKE(n) printf("\nBEE_WAKE %d!", n)
 #endif
 #ifndef BEAR_EAT
 #define BEAR_EAT() printf("\nBEAR_EAT!")
@@ -17,11 +17,12 @@ int N, H, P, E, C;
 int honeyCount = 0;
 int jarsCompleted = 0;
 
-// Синхронизация
+// синхронизация
 CRITICAL_SECTION cs;
 CONDITION_VARIABLE jarFullCV;
 CONDITION_VARIABLE jarEmptyCV;
 
+// поток пчелы
 DWORD WINAPI BeeThread(LPVOID lpParam) {
     int beeId = *(int*)lpParam;
     free(lpParam);
@@ -64,6 +65,7 @@ DWORD WINAPI BeeThread(LPVOID lpParam) {
     return 0;
 }
 
+// поток медведя
 DWORD WINAPI BearThread(LPVOID lpParam) {
     (void)lpParam;
     while (1) {
@@ -109,13 +111,13 @@ int main(int argc, char *argv[]) {
 
     HANDLE *beeThreads = malloc(N * sizeof(HANDLE));
     if (!beeThreads) {
-        fprintf(stderr, "Ошибка выделения памяти\n");
+        fprintf(stderr, "Ошибка выделения памяти для пчел\n");
         return 1;
     }
     for (int i = 0; i < N; i++) {
         int *id = malloc(sizeof(int));
         if (!id) {
-            fprintf(stderr, "Ошибка выделения памяти\n");
+            fprintf(stderr, "Ошибка выделения памяти для инициализации пчел\n");
             return 1;
         }
         *id = i + 1;
