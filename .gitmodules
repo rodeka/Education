@@ -1,0 +1,24 @@
+[submodule "Judge/LeetCode"]
+	path = Judge/LeetCode
+	url = https://github.com/rodeka/LeetCode.git
+	branch = main
+
+[submodule "Learning/ITMO-CybSec"]
+	path = Learning/ITMO-CybSec
+	url = https://github.com/rodeka/ITMO-CybSec.git
+	branch = main
+
+[submodule "Pet/TestTask/TT-qtxor"]
+	path = Pet/TestTask/TT-qtxor
+	url = https://github.com/rodeka/TT-qtxor.git
+	branch = main
+
+[submodule "Pet/TestTask/TT-tgllm"]
+	path = Pet/TestTask/TT-tgllm
+	url = https://github.com/rodeka/TT-tgllm.git
+	branch = main
+
+[submodule "Pet/AloPin"]
+	path = Pet/AloPin
+	url = https://github.com/rodeka/AloPin.git
+	branch = main
