@@ -18,16 +18,16 @@ Education \
 
 # Judge
 Judge/ \
-├── [LeetCode/](/Judge/LeetCode/) # Submodule: repository with LeetCode solutions \
-└── [CodeForces/](/Judge/CodeForces/) # Submodule: repository with CodeForces problems and solutions
+├── [LeetCode/](https://github.com/rodeka/LeetCode/) # Submodule: repository with LeetCode solutions \
+└── [CodeForces/](https://github.com/rodeka/CodeForces/) # Submodule: repository with CodeForces problems and solutions
 
 # Pet
 
 Pet/ \
 ├── [TestTask/](/Pet/TestTask/) # All my test tasks for interview etc. \
-└── [Alopin/](/Pet/Alopin/) # Submodule: project to bruteforce steam family view pin
+└── [Alopin/](https://github.com/rodeka/AloPin) # Submodule: project to bruteforce steam family view pin
 
 # Learning
 
 Learning/ \
-└── [ITMO-CybSec](/Learning/ITMO-CybSec/) # My university repository to store all works, labs, etc.
+└── [ITMO-CybSec](https://github.com/rodeka/ITMO-CybSec/) # My university repository to store all works, labs, etc.
