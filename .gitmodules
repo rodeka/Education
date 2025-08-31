@@ -22,3 +22,8 @@
 	path = Pet/AloPin
 	url = https://github.com/rodeka/AloPin.git
 	branch = main
+
+[submodule "Pet/TestTask/TT-infotecs"]
+	path = Pet/TestTask/TT-infotecs
+	url = https://github.com/rodeka/TT-infotecs.git
+	branch = main
